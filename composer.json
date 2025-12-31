@@ -4,8 +4,8 @@
     "type": "symfony-bundle",
     "require": {
         "php": "^8.2",
-        "symfony/monolog-bundle": "^3.9 || ^4.0",
-        "symfony/framework-bundle": "^7.0 || ^8.0"
+        "symfony/monolog-bundle": "^3.11 || ^4.0",
+        "symfony/framework-bundle": "^7.4 || ^8.0"
     },
     "license": "MIT",
     "autoload": {
