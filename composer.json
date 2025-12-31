@@ -3,8 +3,9 @@
     "description": "Automatic domain based logging for Symfony",
     "type": "symfony-bundle",
     "require": {
-        "symfony/monolog-bundle": "^3.9",
-        "symfony/framework-bundle": "^6.4|^7.0|^8.0"
+        "php": "^8.2",
+        "symfony/monolog-bundle": "^3.9 || ^4.0",
+        "symfony/framework-bundle": "^7.0 || ^8.0"
     },
     "license": "MIT",
     "autoload": {
