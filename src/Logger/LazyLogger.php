@@ -2,7 +2,7 @@
 
 namespace Logger;
 
-namespace ShadowWaft\LazyLoggerBundle\Logger;
+namespace ShadowWaft\LazyLogger\Logger;
 
 use Psr\Log\LoggerInterface;
 
