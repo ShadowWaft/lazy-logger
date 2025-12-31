@@ -1,0 +1,22 @@
+{
+    "name": "shadowwaft/lazy-logger",
+    "description": "Automatic domain based logging for Symfony",
+    "type": "symfony-bundle",
+    "require": {
+        "symfony/monolog-bundle": "^3.9",
+        "symfony/framework-bundle": "^6.4|^7.0|^8.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "ShadowWaft\\LazyLogger\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ShadowWaft",
+            "email": "pascal.meinecke1@web.de"
+        }
+    ],
+    "minimum-stability": "stable"
+}
