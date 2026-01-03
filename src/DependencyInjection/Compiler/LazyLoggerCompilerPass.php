@@ -2,12 +2,14 @@
 
 namespace ShadowWaft\LazyLogger\DependencyInjection\Compiler;
 
+use Monolog\Level;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use ShadowWaft\LazyLogger\Attribute\LazyLog;
+use ShadowWaft\LazyLogger\Logger\LazyLoggerTrait;
 use ReflectionClass;
 
 class LazyLoggerCompilerPass implements CompilerPassInterface
@@ -21,13 +23,20 @@ class LazyLoggerCompilerPass implements CompilerPassInterface
             }
 
             $reflection = new ReflectionClass($class);
-            $attributes = $reflection->getAttributes(LazyLog::class);
-            if (empty($attributes)) {
+
+            if (!in_array(LazyLoggerTrait::class, $reflection->getTraitNames())) {
                 continue;
             }
 
-            $config = $attributes[0]->newInstance();
-            $channel = $config->channel;
+            $attributes = $reflection->getAttributes(LazyLog::class);
+            $channel = 'default';
+            $level = Level::Debug;
+
+            if (!empty($attributes)) {
+                $config = $attributes[0]->newInstance();
+                $channel = $config->channel;
+                $level = Logger::toMonologLevel($config->level);
+            }
 
             $loggerId = "lazy_logger.$channel";
 
@@ -40,7 +49,7 @@ class LazyLoggerCompilerPass implements CompilerPassInterface
                     StreamHandler::class
                 );
                 $handlerDef->addArgument("%kernel.logs_dir%/$channel.log");
-                $handlerDef->addArgument(Logger::toMonologLevel($config->level));
+                $handlerDef->addArgument($level);
 
                 $loggerDef->addMethodCall(
                     'pushHandler',

@@ -13,6 +13,14 @@
             "ShadowWaft\\LazyLogger\\": "src/"
         }
     },
+    "extra": {
+        "symfony": {
+            "allow-contrib": true,
+            "bundle": [
+                "ShadowWaft\\LazyLogger\\LazyLoggerBundle"
+            ]
+        }
+    },
     "authors": [
         {
             "name": "ShadowWaft",
