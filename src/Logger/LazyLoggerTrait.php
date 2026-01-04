@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface;
 
 trait LazyLoggerTrait
 {
-    private ?LoggerInterface $logger = null;
+    protected ?LoggerInterface $logger = null;
 
     public function setLazyLogger(LoggerInterface $logger): void
     {
