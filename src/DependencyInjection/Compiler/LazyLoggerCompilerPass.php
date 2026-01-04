@@ -22,11 +22,16 @@ class LazyLoggerCompilerPass implements CompilerPassInterface
                 continue;
             }
 
-            $reflection = new ReflectionClass($class);
-
-            if (!in_array(LazyLoggerTrait::class, $reflection->getTraitNames())) {
+            // Skip abstract definitions - they are used for inheritance only
+            if ($definition->isAbstract()) {
                 continue;
             }
+
+            if (!$this->classUsesTraitRecursive($class, LazyLoggerTrait::class)) {
+                continue;
+            }
+
+            $reflection = new ReflectionClass($class);
 
             $attributes = $reflection->getAttributes(LazyLog::class);
             $channel = 'default';
@@ -62,5 +67,28 @@ class LazyLoggerCompilerPass implements CompilerPassInterface
                 [new Reference($loggerId)]
             );
         }
+    }
+
+    /**
+     * Recursively checks if a class uses a specific trait in its hierarchy.
+     *
+     * @param string $class The class name to check
+     * @param string $trait The trait to look for
+     * @return bool True if the trait is used anywhere in the class hierarchy
+     */
+    private function classUsesTraitRecursive(string $class, string $trait): bool
+    {
+        $usedTraits = [];
+
+        // Traverse the entire class hierarchy
+        do {
+            $traits = class_uses($class);
+            if ($traits === false) {
+                break;
+            }
+            $usedTraits = array_merge($usedTraits, $traits);
+        } while ($class = get_parent_class($class));
+
+        return in_array($trait, $usedTraits);
     }
 }
